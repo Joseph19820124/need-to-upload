@@ -6,12 +6,10 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - GITHUB_MCP_GITHUB_TOKEN=${GITHUB_TOKEN}
-      - GITHUB_MCP_HOST=0.0.0.0
-      - GITHUB_MCP_PORT=8080
-      - GITHUB_MCP_GITHUB_READ_ONLY=false
-    env_file:
-      - .env
+      - GITHUB_MCP_GITHUB_TOKEN=${GITHUB_TOKEN:-}
+      - GITHUB_MCP_HOST=${GITHUB_MCP_HOST:-0.0.0.0}
+      - GITHUB_MCP_PORT=${GITHUB_MCP_PORT:-8080}
+      - GITHUB_MCP_GITHUB_READ_ONLY=${GITHUB_MCP_GITHUB_READ_ONLY:-false}
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/api/v1/health"]
