@@ -56,8 +56,12 @@ func init() {
 }
 
 func runHTTPServer(cmd *cobra.Command, args []string) {
-	// Get GitHub token from environment variable first, fallback to viper
-	githubToken := os.Getenv("GITHUB_MCP_GITHUB_TOKEN")
+	// Get GitHub token from environment variables first, then fallback to viper
+	// Priority: GITHUB_TOKEN > GITHUB_MCP_GITHUB_TOKEN > viper config
+	githubToken := os.Getenv("GITHUB_TOKEN")
+	if githubToken == "" {
+		githubToken = os.Getenv("GITHUB_MCP_GITHUB_TOKEN")
+	}
 	if githubToken == "" {
 		githubToken = viper.GetString("github.token")
 	}
