@@ -69,7 +69,12 @@ func runHTTPServer(cmd *cobra.Command, args []string) {
 	}
 
 	port := viper.GetInt("port")
-	if envPort := os.Getenv("GITHUB_MCP_PORT"); envPort != "" {
+	// Railway provides PORT environment variable
+	if railwayPort := os.Getenv("PORT"); railwayPort != "" {
+		if p, err := strconv.Atoi(railwayPort); err == nil {
+			port = p
+		}
+	} else if envPort := os.Getenv("GITHUB_MCP_PORT"); envPort != "" {
 		if p, err := strconv.Atoi(envPort); err == nil {
 			port = p
 		}
