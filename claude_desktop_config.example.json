@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "github-mcp-railway": {
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/client-http", 
+        "https://your-railway-app-url.railway.app"
+      ],
+      "env": {
+        "NODE_ENV": "production",
+        "MCP_CLIENT_TIMEOUT": "30000"
+      }
+    }
+  },
+  "globalShortcut": {
+    "enabled": true,
+    "key": "CommandOrControl+Shift+Space"
+  }
+}
