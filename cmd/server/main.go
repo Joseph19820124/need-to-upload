@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"strings"
 	"syscall"
 	"time"
@@ -55,13 +56,37 @@ func init() {
 }
 
 func runHTTPServer(cmd *cobra.Command, args []string) {
+	// Get GitHub token from environment variable first, fallback to viper
+	githubToken := os.Getenv("GITHUB_MCP_GITHUB_TOKEN")
+	if githubToken == "" {
+		githubToken = viper.GetString("github.token")
+	}
+
+	// Get other config from environment variables with fallback to viper
+	host := os.Getenv("GITHUB_MCP_HOST")
+	if host == "" {
+		host = viper.GetString("host")
+	}
+
+	port := viper.GetInt("port")
+	if envPort := os.Getenv("GITHUB_MCP_PORT"); envPort != "" {
+		if p, err := strconv.Atoi(envPort); err == nil {
+			port = p
+		}
+	}
+
+	readOnly := viper.GetBool("github.read_only")
+	if envReadOnly := os.Getenv("GITHUB_MCP_GITHUB_READ_ONLY"); envReadOnly != "" {
+		readOnly = envReadOnly == "true"
+	}
+
 	config := &httpserver.ServerConfig{
-		Host:        viper.GetString("host"),
-		Port:        viper.GetInt("port"),
+		Host:        host,
+		Port:        port,
 		TLSCert:     viper.GetString("tls.cert"),
 		TLSKey:      viper.GetString("tls.key"),
-		GitHubToken: viper.GetString("github.token"),
-		ReadOnly:    viper.GetBool("github.read_only"),
+		GitHubToken: githubToken,
+		ReadOnly:    readOnly,
 	}
 
 	server, err := httpserver.NewServer(config)
