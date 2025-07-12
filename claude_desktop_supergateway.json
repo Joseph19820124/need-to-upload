@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "github-railway": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "supergateway",
+        "--sse",
+        "https://your-railway-app.railway.app/api/v1/events"
+      ],
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+  },
+  "globalShortcut": {
+    "enabled": true,
+    "key": "CommandOrControl+Shift+Space"
+  }
+}

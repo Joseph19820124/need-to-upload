@@ -1,6 +1,57 @@
-# Claude Desktop 快速配置指南
+# Claude Desktop 配置指南
 
-## 你的 MCP Server 端点
+## 🎯 配置方式选择
+
+你有两种方式配置 Claude Desktop 连接到你的 Railway MCP Server：
+
+1. **🚀 使用 Supergateway (推荐)** - 简单、可靠、官方支持
+2. **🔧 自定义客户端** - 完全控制、高级功能
+
+---
+
+## 方式一：使用 Supergateway (推荐)
+
+### 为什么选择 Supergateway？
+- ✅ **官方支持**：由 MCP 生态系统维护
+- ✅ **简单配置**：只需一行命令
+- ✅ **自动重连**：网络断开时自动恢复
+- ✅ **广泛兼容**：支持各种 SSE MCP 服务器
+
+### 配置步骤
+
+**第一步**：复制以下配置到 `~/Library/Application Support/Claude/claude_desktop_config.json`：
+
+```json
+{
+  "mcpServers": {
+    "github-railway": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "supergateway",
+        "--sse",
+        "https://your-railway-app.railway.app/api/v1/events"
+      ]
+    }
+  }
+}
+```
+
+**第二步**：替换 `your-railway-app.railway.app` 为你的实际 Railway 域名
+
+**第三步**：重启 Claude Desktop
+
+**就这么简单！** 🎉
+
+详细说明请查看 [SUPERGATEWAY_SETUP.md](./SUPERGATEWAY_SETUP.md)
+
+---
+
+## 方式二：自定义客户端
+
+如果你需要更多控制或想了解底层实现，可以使用自定义客户端。
+
+### 你的 MCP Server 端点
 
 部署到 Railway 后，你的 MCP Server 提供以下端点：
 
@@ -10,7 +61,7 @@
 - **健康检查**: `GET /api/v1/health`
 - **断开连接**: `POST /api/v1/disconnect`
 
-## Claude Desktop 配置
+### Claude Desktop 配置
 
 ### 📁 配置文件位置
 
